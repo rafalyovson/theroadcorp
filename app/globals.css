@@ -43,7 +43,8 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden; /* lock viewport, no page scroll */
 }
@@ -55,10 +56,18 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(60% 40% at 50% 0%, color-mix(in oklab, var(--foreground) 8%, transparent) 0%, transparent 60%),
-    repeating-linear-gradient(90deg, color-mix(in oklab, var(--foreground) 4%, transparent) 0 1px, transparent 1px 100px);
+    radial-gradient(
+      60% 40% at 50% 0%,
+      color-mix(in oklab, var(--foreground) 8%, transparent) 0%,
+      transparent 60%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--foreground) 4%, transparent) 0 1px,
+      transparent 1px 100px
+    );
   mask: linear-gradient(to bottom, black, black 70%, transparent);
-  opacity: .5;
+  opacity: 0.5;
 }
 
 /* Hide scrollbars utility (used by the horizontal road scroller) */
@@ -66,19 +75,24 @@ body::before {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
 /* Road scroller visuals */
 .road {
-  --asphalt: color-mix(in oklab, var(--foreground) 6%, transparent);
-  --lane: color-mix(in oklab, var(--foreground) 40%, transparent);
+  --asphalt: rgba(0, 0, 0, 0.4);
+  --lane: rgba(139, 0, 0, 0.3);
   position: relative;
   background: var(--asphalt);
+  border-color: rgba(139, 0, 0, 0.2);
 }
 .road::before {
   content: "";
   position: absolute;
-  left: 0; right: 0; top: 50%;
+  left: 0;
+  right: 0;
+  top: 50%;
   height: 3px;
   transform: translateY(-50%);
   background: repeating-linear-gradient(
@@ -86,41 +100,68 @@ body::before {
     transparent 0 20px,
     var(--lane) 20px 40px
   );
-  opacity: .6;
+  opacity: 0.6;
 }
 
 /* Card hover lift */
 .lift {
   transform: translateY(0) scale(1);
-  transition: transform 200ms ease, box-shadow 200ms ease, background-color 200ms ease;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease,
+    border-color 200ms ease;
 }
 .lift:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 10px 30px color-mix(in oklab, var(--foreground) 10%, transparent);
+  box-shadow:
+    0 10px 30px rgba(139, 0, 0, 0.3),
+    0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Smooth fade-in */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.fade-up { animation: fadeUp .6s ease both; }
+.fade-up {
+  animation: fadeUp 0.6s ease both;
+}
 
 /* Auto-infinite horizontal marquee for the road scroller */
 @keyframes scrollX {
-  from { transform: translateX(0); }
-  to { transform: translateX(-25%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
 }
-.marquee { position: relative; overflow: hidden; }
+.marquee {
+  position: relative;
+  overflow: hidden;
+}
 .marquee-track {
   display: flex;
   width: max-content; /* allow natural width */
   animation: scrollX 36s linear infinite;
 }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-.marquee:focus-within .marquee-track { animation-play-state: paused; }
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
+  .marquee-track {
+    animation: none;
+  }
 }
 
 :root {

@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://theroadcorp.com";
   const now = new Date();
-  
+
   return [
     {
       url: base,
@@ -21,9 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // {
     //   url: `${base}/projects`,
     //   lastModified: now,
-    //   changeFrequency: "monthly", 
+    //   changeFrequency: "monthly",
     //   priority: 0.9,
     // },
   ];
 }
-

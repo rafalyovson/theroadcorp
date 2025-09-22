@@ -14,14 +14,19 @@ const geistMono = Geist_Mono({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.NODE_ENV === 'production' ? "https://theroadcorp.com" : "http://localhost:3000");
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.NODE_ENV === "production"
+      ? "https://theroadcorp.com"
+      : "http://localhost:3000");
   const metadataBase = new URL(siteUrl);
   return {
     title: {
       default: "Roadcorp",
       template: "%s | Roadcorp",
     },
-    description: "Roadcorp: Building innovative products and solutions. The Road to Infinity — building, shipping, iterating.",
+    description:
+      "Roadcorp: Building innovative products and solutions. The Road to Infinity — building, shipping, iterating.",
     keywords: [
       "Roadcorp",
       "Lyovson",
@@ -62,13 +67,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ["/logos/roadcorp-logo-dark.png"],
     },
     icons: {
-      icon: [
-        { url: "/favicon.ico" },
-        { url: "/icon.png", type: "image/png" },
-      ],
-      apple: [
-        { url: "/apple-icon.png" },
-      ],
+      icon: [{ url: "/favicon.ico" }, { url: "/icon.png", type: "image/png" }],
+      apple: [{ url: "/apple-icon.png" }],
     },
     manifest: "/manifest.json",
     robots: {
@@ -105,23 +105,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="ltr" className="dark">
+    <html className="dark" dir="ltr" lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
+        className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}
       >
         {/* Structured Data */}
         <Script
-          id="ld-org"
-          type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "@id": process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example",
+              "@id":
+                process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example",
               name: "Roadcorp",
               alternateName: ["Road Corp", "The Road Corporation"],
-              url: process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example",
+              url:
+                process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example",
               sameAs: [
                 "https://www.bagaranagency.com",
                 "https://www.lyovson.com",
@@ -135,11 +134,23 @@ export default function RootLayout({
                 caption: "Roadcorp Logo",
               },
               image: "/logos/roadcorp-logo-dark.png",
-              description: "Roadcorp: Building innovative products and solutions. The Road to Infinity — building, shipping, iterating.",
+              description:
+                "Roadcorp: Building innovative products and solutions. The Road to Infinity — building, shipping, iterating.",
               slogan: "The Road to Infinity",
               foundingDate: "2024",
-              keywords: ["Product Studio", "Design", "Engineering", "Innovation", "Technology"],
-              knowsAbout: ["Web Development", "Product Design", "Software Engineering", "Digital Innovation"],
+              keywords: [
+                "Product Studio",
+                "Design",
+                "Engineering",
+                "Innovation",
+                "Technology",
+              ],
+              knowsAbout: [
+                "Web Development",
+                "Product Design",
+                "Software Engineering",
+                "Digital Innovation",
+              ],
               areaServed: {
                 "@type": "Place",
                 name: "Worldwide",
@@ -148,32 +159,44 @@ export default function RootLayout({
                 "@type": "SearchAction",
                 target: {
                   "@type": "EntryPoint",
-                  urlTemplate: (process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example") + "?q={search_term_string}",
+                  urlTemplate: `${
+                    process.env.NEXT_PUBLIC_SITE_URL ||
+                    "https://roadcorp.example"
+                  }?q={search_term_string}`,
                 },
                 "query-input": "required name=search_term_string",
               },
             }),
           }}
+          id="ld-org"
+          strategy="afterInteractive"
+          type="application/ld+json"
         />
         <Script
-          id="ld-website"
-          type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "@id": (process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example") + "#website",
-              url: process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example",
+              "@id": `${
+                process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example"
+              }#website`,
+              url:
+                process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example",
               name: "Roadcorp",
-              description: "Roadcorp: Building innovative products and solutions. The Road to Infinity — building, shipping, iterating.",
+              description:
+                "Roadcorp: Building innovative products and solutions. The Road to Infinity — building, shipping, iterating.",
               publisher: {
                 "@type": "Organization",
-                "@id": process.env.NEXT_PUBLIC_SITE_URL || "https://roadcorp.example",
+                "@id":
+                  process.env.NEXT_PUBLIC_SITE_URL ||
+                  "https://roadcorp.example",
               },
               inLanguage: "en-US",
             }),
           }}
+          id="ld-website"
+          strategy="afterInteractive"
+          type="application/ld+json"
         />
         {children}
       </body>
