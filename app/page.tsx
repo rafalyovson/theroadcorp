@@ -1,12 +1,6 @@
 import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 type Project = {
   name: string;
@@ -45,8 +39,7 @@ const projects: Project[] = [
 
 export default function Home() {
   return (
-    <TooltipProvider>
-      <div className="relative min-h-screen w-full">
+    <div className="relative min-h-screen w-full">
         {/* Crimson Depth */}
         <div
           className="absolute inset-0 z-0"
@@ -58,23 +51,25 @@ export default function Home() {
 
         <main className="relative z-10 flex h-dvh flex-col overflow-hidden">
           {/* Hero */}
-          <section className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-            <Image
-              alt="Roadcorp logo"
-              className="fade-up mx-auto drop-shadow-sm"
-              height={200}
-              priority
-              sizes="(max-width: 640px) 140px, 200px"
-              src="/logos/roadcorp-logo-dark.png"
-              width={200}
-            />
-            <h1 className="fade-up font-semibold text-3xl tracking-tight [animation-delay:.08s] sm:text-5xl">
-              The Road to Infinity
-            </h1>
+          <section className="flex flex-1 flex-col items-center justify-center px-6 text-center">
+            <div className="mx-auto w-full max-w-2xl flex flex-col items-center gap-7 sm:gap-9">
+              <Image
+                alt="Roadcorp logo"
+                className="fade-up drop-shadow-[0_4px_16px_rgba(0,0,0,0.4),0_0_40px_rgba(139,0,0,0.1)]"
+                height={200}
+                priority
+                sizes="(max-width: 640px) 140px, 200px"
+                src="/logos/roadcorp-logo-dark.png"
+                width={200}
+              />
+              <h1 className="fade-up font-semibold text-3xl leading-tight tracking-[-0.02em] [animation-delay:.1s] sm:text-5xl sm:leading-[1.08] sm:tracking-[-0.03em] text-white/95">
+                The Road to Infinity
+              </h1>
+            </div>
           </section>
 
           {/* Road scroller */}
-          <section className="py-4 sm:py-6" id="work">
+          <section className="py-5 sm:py-7" id="work">
             <div className="relative">
               <div className="road w-full overflow-hidden border-y">
                 <div
@@ -95,51 +90,44 @@ export default function Home() {
                           className="inline-block align-top"
                           key={`${p.name}-${idx}`}
                         >
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                asChild
-                                className="lift h-auto w-[70vw] border border-red-950/30 bg-black/40 p-5 backdrop-blur-sm transition-all duration-200 hover:border-red-900/50 hover:bg-black/60 sm:w-[380px] sm:p-6 md:w-[480px]"
-                                size="lg"
-                                tabIndex={hidden ? -1 : 0}
-                                variant="ghost"
-                              >
-                                <a
-                                  aria-label={`Visit ${p.name}`}
-                                  className="flex items-center gap-4 text-left sm:gap-5"
-                                  href={p.href}
-                                  rel="noopener noreferrer"
-                                  target="_blank"
-                                >
-                                  <Image
-                                    alt={p.alt}
-                                    className="size-12 flex-shrink-0 object-contain sm:size-16"
-                                    height={64}
-                                    loading="lazy"
-                                    src={p.logo}
-                                    width={64}
-                                  />
-                                  <div className="min-w-0 flex-1">
-                                    <div className="mb-1 flex items-center gap-2">
-                                      <h3 className="truncate font-semibold text-lg tracking-tight sm:text-xl">
-                                        {p.name}
-                                      </h3>
-                                      <ExternalLink className="size-4 flex-shrink-0 text-muted-foreground" />
-                                    </div>
-                                    <p className="truncate text-muted-foreground text-sm">
-                                      {new URL(p.href).hostname}
-                                    </p>
-                                  </div>
-                                </a>
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent className="max-w-xs" side="top">
-                              <p className="font-medium">{p.name}</p>
-                              <p className="text-muted-foreground text-sm">
-                                {p.description}
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
+                          <Button
+                            asChild
+                            className="lift h-auto w-[70vw] rounded-xl border p-5 !bg-transparent transition-all duration-300 !hover:bg-transparent sm:w-[380px] sm:p-6 md:w-[480px]"
+                            style={{
+                              borderColor: 'rgba(139, 0, 0, 0.25)',
+                            }}
+                            size="lg"
+                            tabIndex={hidden ? -1 : 0}
+                            variant="ghost"
+                          >
+                            <a
+                              aria-label={`Visit ${p.name}`}
+                              className="group/card flex items-center gap-4 text-left sm:gap-5"
+                              href={p.href}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                            >
+                              <Image
+                                alt={p.alt}
+                                className="size-12 flex-shrink-0 object-contain transition-opacity duration-300 sm:size-16 group-hover/card:opacity-90"
+                                height={64}
+                                loading="lazy"
+                                src={p.logo}
+                                width={64}
+                              />
+                              <div className="min-w-0 flex-1">
+                                <div className="mb-1.5 flex items-center gap-2">
+                                  <h3 className="truncate font-semibold text-lg leading-tight tracking-tight text-white/95 sm:text-xl">
+                                    {p.name}
+                                  </h3>
+                                  <ExternalLink className="size-4 flex-shrink-0 text-muted-foreground opacity-60 transition-opacity duration-300 group-hover/card:opacity-85" />
+                                </div>
+                                <p className="truncate text-muted-foreground text-sm leading-relaxed opacity-80">
+                                  {new URL(p.href).hostname}
+                                </p>
+                              </div>
+                            </a>
+                          </Button>
                         </li>
                       );
                     })}
@@ -149,7 +137,6 @@ export default function Home() {
             </div>
           </section>
         </main>
-      </div>
-    </TooltipProvider>
+    </div>
   );
 }

@@ -49,7 +49,7 @@ body {
   overflow: hidden; /* lock viewport, no page scroll */
 }
 
-/* Subtle global background texture */
+/* Subtle global background texture (keep it quiet; avoid visible grids) */
 body::before {
   content: "";
   position: fixed;
@@ -57,17 +57,23 @@ body::before {
   pointer-events: none;
   background:
     radial-gradient(
-      60% 40% at 50% 0%,
-      color-mix(in oklab, var(--foreground) 8%, transparent) 0%,
-      transparent 60%
+      70% 50% at 50% 0%,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      110% 90% at 50% 100%,
+      transparent 0%,
+      color-mix(in oklab, var(--foreground) 10%, transparent) 78%,
+      color-mix(in oklab, var(--foreground) 14%, transparent) 100%
     ),
     repeating-linear-gradient(
       90deg,
-      color-mix(in oklab, var(--foreground) 4%, transparent) 0 1px,
-      transparent 1px 100px
+      color-mix(in oklab, var(--foreground) 2%, transparent) 0 1px,
+      transparent 1px 180px
     );
-  mask: linear-gradient(to bottom, black, black 70%, transparent);
-  opacity: 0.5;
+  mask: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+  opacity: 0.35;
 }
 
 /* Hide scrollbars utility (used by the horizontal road scroller) */
@@ -81,11 +87,12 @@ body::before {
 
 /* Road scroller visuals */
 .road {
-  --asphalt: rgba(0, 0, 0, 0.4);
-  --lane: rgba(139, 0, 0, 0.3);
+  --asphalt: rgba(0, 0, 0, 0.42);
+  --lane: rgba(139, 0, 0, 0.28);
   position: relative;
   background: var(--asphalt);
-  border-color: rgba(139, 0, 0, 0.2);
+  border-color: rgba(139, 0, 0, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 .road::before {
   content: "";
@@ -93,37 +100,65 @@ body::before {
   left: 0;
   right: 0;
   top: 50%;
-  height: 3px;
+  height: 2px;
   transform: translateY(-50%);
   background: repeating-linear-gradient(
     to right,
-    transparent 0 20px,
-    var(--lane) 20px 40px
+    transparent 0 22px,
+    var(--lane) 22px 44px
   );
-  opacity: 0.6;
+  opacity: 0.55;
+}
+.road::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(139, 0, 0, 0.04) 0%,
+    transparent 10%,
+    transparent 90%,
+    rgba(139, 0, 0, 0.04) 100%
+  );
+  pointer-events: none;
 }
 
-/* Card hover lift */
+/* Card hover lift (no hover effect; keep focus handling via Button styles) */
 .lift {
   transform: translateY(0) scale(1);
   transition:
-    transform 200ms ease,
-    box-shadow 200ms ease,
-    background-color 200ms ease,
-    border-color 200ms ease;
+    transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 280ms ease,
+    border-color 280ms ease,
+    backdrop-filter 280ms ease;
+  will-change: transform, box-shadow;
 }
-.lift:hover {
-  transform: translateY(-2px) scale(1.01);
-  box-shadow:
-    0 10px 30px rgba(139, 0, 0, 0.3),
-    0 5px 15px rgba(0, 0, 0, 0.5);
+.lift:hover,
+.lift:focus-visible {
+  transform: translateY(0) scale(1);
+  box-shadow: 0 0 32px rgba(139, 0, 0, 0.18), 0 0 64px rgba(139, 0, 0, 0.1);
+  backdrop-filter: none;
+  border-color: rgba(139, 0, 0, 0.38);
+}
+.lift:active {
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lift {
+    transition: background-color 200ms ease, border-color 200ms ease;
+  }
+  .lift:hover,
+  .lift:focus-visible {
+    transform: none;
+  }
 }
 
-/* Smooth fade-in */
+/* Smooth fade-in with refined timing */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -131,7 +166,13 @@ body::before {
   }
 }
 .fade-up {
-  animation: fadeUp 0.6s ease both;
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 /* Auto-infinite horizontal marquee for the road scroller */
@@ -146,21 +187,38 @@ body::before {
 .marquee {
   position: relative;
   overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
 }
 .marquee-track {
   display: flex;
   width: max-content; /* allow natural width */
   animation: scrollX 36s linear infinite;
+  will-change: transform;
 }
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
+.marquee:hover .marquee-track,
 .marquee:focus-within .marquee-track {
   animation-play-state: paused;
 }
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
+  }
+  .marquee {
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 }
 
